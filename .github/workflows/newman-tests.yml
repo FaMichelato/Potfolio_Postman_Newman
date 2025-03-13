@@ -26,7 +26,7 @@ jobs:
         run: npm install -g newman
 
       - name: Executar Testes no Newman
-        run: newman run ReqRes.postman_collection.json -e Req - Prod.postman_environment.json -r cli,html --reporter-html-export report.html
+        run: newman run ReqRes.postman_collection.json -e ReqProd.postman_environment.json -r cli,html --reporter-html-export report.html
 
       - name: Upload do Relatório HTML
         uses: actions/upload-artifact@v4 
