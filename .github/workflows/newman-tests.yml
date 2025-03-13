@@ -1,0 +1,35 @@
+name: Run API Tests with Newman
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch: # Permite rodar manualmente
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout do repositório
+        uses: actions/checkout@v3
+
+      - name: Instalar Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: Instalar Newman
+        run: npm install -g newman
+
+      - name: Executar Testes no Newman
+        run: newman run reqres-tests.json -e req-prod.json -r cli,html --reporter-html-export report.html
+
+      - name: Upload do Relatório HTML
+        uses: actions/upload-artifact@v3
+        with:
+          name: newman-report
+          path: report.html
