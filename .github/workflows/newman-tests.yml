@@ -29,7 +29,7 @@ jobs:
         run: newman run reqres-tests.json -e req-prod.json -r cli,html --reporter-html-export report.html
 
       - name: Upload do Relatório HTML
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4 
         with:
           name: newman-report
           path: report.html
