@@ -1,0 +1,785 @@
+{
+	"info": {
+		"_postman_id": "95e45a84-cde5-4265-88f1-e2fb41da370c",
+		"name": "ReqRes",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "28359710"
+	},
+	"item": [
+		{
+			"name": "Cadastro de usuário - e2e",
+			"item": [
+				{
+					"name": "Cadastro usuário",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"\r",
+									"pm.test(\"Status code é 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Resposta contém ID do usuário\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.have.property(\"id\");\r",
+									"    pm.collectionVariables.set(\"userId\", jsonData.id); // Armazena o ID para as próximas requisições\r",
+									"});\r",
+									"\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"eve.holt@reqres.in\",\r\n    \"password\": \"pistol\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://reqres.in/api/register",
+							"protocol": "https",
+							"host": [
+								"reqres",
+								"in"
+							],
+							"path": [
+								"api",
+								"register"
+							]
+						},
+						"description": "Generated from cURL: curl -X 'POST' \\\r\n  'https://reqres.in/api/register' \\\r\n  -H 'accept: application/json' \\\r\n  -H 'Content-Type: application/json' \\\r\n  -d '{\r\n  \"username\": \"Teste teste\",\r\n  \"email\": \"teste@teste.com.br\",\r\n  \"password\": \"admin123\"\r\n}'"
+					},
+					"response": []
+				},
+				{
+					"name": "Consulta usuário inserido",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code é 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Usuário retornado contém ID correto\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.data.id).to.eql(parseInt(pm.collectionVariables.get(\"userId\")));\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "https://reqres.in/api/users/4?id={{userId}}",
+							"protocol": "https",
+							"host": [
+								"reqres",
+								"in"
+							],
+							"path": [
+								"api",
+								"users",
+								"4"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "{{userId}}"
+								}
+							]
+						},
+						"description": "Generated from cURL: curl -X 'GET' \\\r\n  'https://reqres.in/api/users/4' \\\r\n  -H 'accept: application/json'"
+					},
+					"response": []
+				},
+				{
+					"name": "Alterando usuário",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();\r",
+									"\r",
+									"pm.test(\"A resposta contém a mensagem de erro esperada\", function () {\r",
+									"    pm.expect(jsonData).to.have.property(\"updatedAt\"); // Verifica se a propriedade \"update\" existe\r",
+									"});\r",
+									"\r",
+									"pm.test(\"'updatedAt' está no formato correto de data ISO 8601\", function () {\r",
+									"    let updatedAt = jsonData.updatedAt;\r",
+									"    let isoFormat = /^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}.\\d{3}Z$/;\r",
+									"\r",
+									"    pm.expect(updatedAt).to.match(isoFormat);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "https://reqres.in/api/users/{id}",
+							"protocol": "https",
+							"host": [
+								"reqres",
+								"in"
+							],
+							"path": [
+								"api",
+								"users",
+								"{id}"
+							]
+						},
+						"description": "Generated from cURL: curl -X 'PUT' \\\r\n  'https://reqres.in/api/users/{id}' \\\r\n  -H 'accept: application/json'"
+					},
+					"response": []
+				},
+				{
+					"name": "Consultando alteração",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code é 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Usuário retornado contém ID correto\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.data.id).to.eql(parseInt(pm.collectionVariables.get(\"userId\")));\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "https://reqres.in/api/users/{{userId}}",
+							"protocol": "https",
+							"host": [
+								"reqres",
+								"in"
+							],
+							"path": [
+								"api",
+								"users",
+								"{{userId}}"
+							]
+						},
+						"description": "Generated from cURL: curl -X 'GET' \\\r\n  'https://reqres.in/api/users/4' \\\r\n  -H 'accept: application/json'"
+					},
+					"response": []
+				},
+				{
+					"name": "Deletando usuário",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code é 204\", function () {\r",
+									"    pm.response.to.have.status(204);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "https://reqres.in/api/users/{{userId}}",
+							"protocol": "https",
+							"host": [
+								"reqres",
+								"in"
+							],
+							"path": [
+								"api",
+								"users",
+								"{{userId}}"
+							]
+						},
+						"description": "Generated from cURL: curl -X 'GET' \\\r\n  'https://reqres.in/api/users/4' \\\r\n  -H 'accept: application/json'"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Cadastro de usuário - Cenários alternattivos",
+			"item": [
+				{
+					"name": "Cadastro usuário inválido",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code é 400 ou 400+\", function () {\r",
+									"    pm.expect(pm.response.code).to.be.within(400, 499); // Garante que o status seja um erro (400+)\r",
+									"});\r",
+									"\r",
+									"pm.test(\"A resposta contém a mensagem de erro esperada\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.have.property(\"error\"); // Verifica se a propriedade \"error\" existe\r",
+									"    pm.expect(jsonData.error).to.eql(\"Note: Only defined users succeed registration\"); // Valida a mensagem exata\r",
+									"});\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"teste\",\r\n    \"password\": \"pistol\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://reqres.in/api/register",
+							"protocol": "https",
+							"host": [
+								"reqres",
+								"in"
+							],
+							"path": [
+								"api",
+								"register"
+							]
+						},
+						"description": "Generated from cURL: curl -X 'POST' \\\r\n  'https://reqres.in/api/register' \\\r\n  -H 'accept: application/json' \\\r\n  -H 'Content-Type: application/json' \\\r\n  -d '{\r\n  \"username\": \"Teste teste\",\r\n  \"email\": \"teste@teste.com.br\",\r\n  \"password\": \"admin123\"\r\n}'"
+					},
+					"response": []
+				},
+				{
+					"name": "Cadastro usuário inválido - Body incorreto",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code é 400 ou 400+\", function () {\r",
+									"    pm.expect(pm.response.code).to.be.within(400, 499); // Garante que o status seja um erro (400+)\r",
+									"});\r",
+									"\r",
+									"pm.test(\"A resposta contém a mensagem de erro esperada\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.have.property(\"error\"); // Verifica se a propriedade \"error\" existe\r",
+									"    pm.expect(jsonData.error).to.eql(\"Missing email or username\"); // Valida a mensagem exata\r",
+									"});\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://reqres.in/api/register",
+							"protocol": "https",
+							"host": [
+								"reqres",
+								"in"
+							],
+							"path": [
+								"api",
+								"register"
+							]
+						},
+						"description": "Generated from cURL: curl -X 'POST' \\\r\n  'https://reqres.in/api/register' \\\r\n  -H 'accept: application/json' \\\r\n  -H 'Content-Type: application/json' \\\r\n  -d '{\r\n  \"username\": \"Teste teste\",\r\n  \"email\": \"teste@teste.com.br\",\r\n  \"password\": \"admin123\"\r\n}'"
+					},
+					"response": []
+				},
+				{
+					"name": "Consulta usuário inexistente",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code é 404\", function () {\r",
+									"    pm.response.to.have.status(404);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"O corpo da resposta está vazio\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(Object.keys(jsonData).length).to.eql(0); // Verifica se o objeto está vazio\r",
+									"});\r",
+									"\r",
+									"pm.test(\"O conteúdo da resposta não deve ter dados inesperados\", function () {\r",
+									"    pm.expect(pm.response.text()).to.be.oneOf([\"{}\", \"\"]); // Verifica que é um objeto vazio ou uma string vazia\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "https://reqres.in/api/users/99",
+							"protocol": "https",
+							"host": [
+								"reqres",
+								"in"
+							],
+							"path": [
+								"api",
+								"users",
+								"99"
+							]
+						},
+						"description": "Generated from cURL: curl -X 'GET' \\\r\n  'https://reqres.in/api/users/4' \\\r\n  -H 'accept: application/json'"
+					},
+					"response": []
+				},
+				{
+					"name": "Consulta todos usuários",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Valida se o status code é 200 OK\r",
+									"pm.test(\"Status code é 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"\r",
+									"var jsonData = pm.response.json();\r",
+									"\r",
+									"// Verifica se \"data\" é uma lista (array)\r",
+									"pm.test(\"O objeto 'data' é uma lista\", function () {\r",
+									"    pm.expect(jsonData.data).to.be.an(\"array\");\r",
+									"});\r",
+									"\r",
+									"// Verifica se a lista não está vazia\r",
+									"pm.test(\"A lista de usuários não está vazia\", function () {\r",
+									"    pm.expect(jsonData.data.length).to.be.above(0);\r",
+									"});\r",
+									"\r",
+									"// Valida se cada item da lista contém os atributos esperados\r",
+									"pm.test(\"Cada usuário tem os atributos corretos\", function () {\r",
+									"    jsonData.data.forEach(user => {\r",
+									"        pm.expect(user).to.have.property(\"id\").that.is.a(\"number\");\r",
+									"        pm.expect(user).to.have.property(\"email\").that.is.a(\"string\");\r",
+									"        pm.expect(user).to.have.property(\"first_name\").that.is.a(\"string\");\r",
+									"        pm.expect(user).to.have.property(\"last_name\").that.is.a(\"string\");\r",
+									"        pm.expect(user).to.have.property(\"avatar\").that.is.a(\"string\");\r",
+									"    });\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "https://reqres.in/api/users",
+							"protocol": "https",
+							"host": [
+								"reqres",
+								"in"
+							],
+							"path": [
+								"api",
+								"users"
+							]
+						},
+						"description": "Generated from cURL: curl -X 'GET' \\\r\n  'https://reqres.in/api/users/4' \\\r\n  -H 'accept: application/json'"
+					},
+					"response": []
+				},
+				{
+					"name": "Alteraando usuário",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code é 200+\", function () {\r",
+									"    pm.expect(pm.response.code).to.be.within(200, 299); // Garante que o status seja um erro (400+)\r",
+									"});\r",
+									"\r",
+									"\r",
+									"var jsonData = pm.response.json();\r",
+									"\r",
+									"pm.test(\"A resposta contém a mensagem de erro esperada\", function () {\r",
+									"    pm.expect(jsonData).to.have.property(\"updatedAt\"); // Verifica se a propriedade \"update\" existe\r",
+									"});\r",
+									"\r",
+									"pm.test(\"'updatedAt' está no formato correto de data ISO 8601\", function () {\r",
+									"    let updatedAt = jsonData.updatedAt;\r",
+									"    let isoFormat = /^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}.\\d{3}Z$/;\r",
+									"\r",
+									"    pm.expect(updatedAt).to.match(isoFormat);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "https://reqres.in/api/users/99",
+							"protocol": "https",
+							"host": [
+								"reqres",
+								"in"
+							],
+							"path": [
+								"api",
+								"users",
+								"99"
+							]
+						},
+						"description": "Generated from cURL: curl -X 'GET' \\\r\n  'https://reqres.in/api/users/4' \\\r\n  -H 'accept: application/json'"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Login",
+			"item": [
+				{
+					"name": "Cadastro usuário",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"\r",
+									"pm.test(\"Status code é 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Resposta contém ID do usuário\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.have.property(\"id\");\r",
+									"    pm.collectionVariables.set(\"userId\", jsonData.id); // Armazena o ID para as próximas requisições\r",
+									"});\r",
+									"\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"eve.holt@reqres.in\",\r\n    \"password\": \"pistol\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://reqres.in/api/register",
+							"protocol": "https",
+							"host": [
+								"reqres",
+								"in"
+							],
+							"path": [
+								"api",
+								"register"
+							]
+						},
+						"description": "Generated from cURL: curl -X 'POST' \\\r\n  'https://reqres.in/api/register' \\\r\n  -H 'accept: application/json' \\\r\n  -H 'Content-Type: application/json' \\\r\n  -d '{\r\n  \"username\": \"Teste teste\",\r\n  \"email\": \"teste@teste.com.br\",\r\n  \"password\": \"admin123\"\r\n}'"
+					},
+					"response": []
+				},
+				{
+					"name": "Consulta usuário inserido",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code é 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Usuário retornado contém ID correto\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.data.id).to.eql(parseInt(pm.collectionVariables.get(\"userId\")));\r",
+									"    pm.collectionVariables.set(\"email\", jsonData.data.email)\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "https://reqres.in/api/users/4?id={{userId}}",
+							"protocol": "https",
+							"host": [
+								"reqres",
+								"in"
+							],
+							"path": [
+								"api",
+								"users",
+								"4"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "{{userId}}"
+								}
+							]
+						},
+						"description": "Generated from cURL: curl -X 'GET' \\\r\n  'https://reqres.in/api/users/4' \\\r\n  -H 'accept: application/json'"
+					},
+					"response": []
+				},
+				{
+					"name": "Login com sucesso",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code é 200+\", function () {\r",
+									"    pm.expect(pm.response.code).to.be.within(200, 299); // Garante que o status não seja um erro (400+)\r",
+									"});\r",
+									"\r",
+									"\r",
+									"var jsonData = pm.response.json();\r",
+									"\r",
+									"pm.test(\"A resposta contém a mensagem esperada - token\", function () {\r",
+									"    pm.expect(jsonData).to.have.property(\"token\"); // Verifica se a propriedade \"update\" existe\r",
+									"     pm.expect(jsonData.token).to.eql(\"QpwL5tke4Pnpja7X4\");\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"{{email}}\",\r\n    \"password\": \"pistol\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://reqres.in/api/login",
+							"protocol": "https",
+							"host": [
+								"reqres",
+								"in"
+							],
+							"path": [
+								"api",
+								"login"
+							]
+						},
+						"description": "Generated from cURL: curl -X 'POST' \\\r\n  'https://reqres.in/api/login' \\\r\n  -H 'accept: application/json' \\\r\n  -H 'Content-Type: application/json' \\\r\n  -d '{\r\n    \"email\": \"eve.holt@reqres.in\",\r\n    \"password\": \"pistol\"\r\n}'"
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "userId",
+			"value": ""
+		},
+		{
+			"key": "email",
+			"value": ""
+		}
+	]
+}
