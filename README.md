@@ -11,7 +11,7 @@ Swagger https://reqres.in/api-docs/#/
 
 Lembrando que é uma amostra de como eu estruturo os testes e quais métodos utilizo!
 
-## Execução local
+## Configuração do workflow
 
 ```bash
 
