@@ -18,7 +18,7 @@ Lembrando que é uma amostra de como eu estruturo os testes e quais métodos uti
 Executa automaticamente os testes sempre que houver um push ou pull request na main.
 Permite rodar manualmente pelo GitHub Actions (workflow_dispatch).
 Instala o Node.js e o Newman no ambiente do GitHub Actions.
-Executa os testes com a collection reqres-tests.json e o ambiente req-prod.json.
+Executa os testes com a collection ReqProd.postman_environment.json e o ambiente ReqProd.postman_environment.json.
 Gera um relatório HTML e o salva nos artefatos do workflow.
 
 ```
